@@ -1,0 +1,69 @@
+{
+  "common": {
+    "appName": "Shop",
+    "home": "Home",
+    "profile": "Profile",
+    "cart": "Cart",
+    "language": "Language",
+    "addToCart": "Add to cart",
+    "seeMore": "See more",
+    "loading": "Loading..."
+  },
+  "dashboard": {
+    "featuredProducts": "Featured Products",
+    "newArrivals": "New Arrivals",
+    "shopByBrand": "Shop by Brand"
+  },
+  "cart": {
+    "title": "Your Cart",
+    "empty": "Your cart is empty",
+    "continueShopping": "Continue shopping",
+    "total": "Total",
+    "checkout": "Checkout"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "itemsSummary": "{{count}} item(s) — Total: {{total}}"
+  },
+  "auth": {
+    "login": {
+      "welcomeBack": "Welcome back",
+      "signInToAccount": "Sign in to your account",
+      "email": "Email",
+      "password": "Password",
+      "signIn": "Sign in",
+      "signingIn": "Signing in...",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up"
+    },
+    "register": {
+      "createAccount": "Create an account",
+      "signUpToStart": "Sign up to get started",
+      "fullName": "Full name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "createAccountButton": "Create account",
+      "creatingAccount": "Creating account...",
+      "haveAccount": "Already have an account?",
+      "signIn": "Sign in"
+    }
+  },
+  "toast": {
+    "addedToCart": "{{name}} added to cart",
+    "welcomeBack": "Welcome back!",
+    "accountCreated": "Account created successfully"
+  },
+  "profile": {
+  "loading": "Loading...",
+  "name": "Name",
+  "email": "Email",
+  "phone": "Phone"
+},
+"loginRequired": {
+  "title": "Login required",
+  "description": "You need to sign in to view your profile.",
+  "cancel": "Cancel",
+  "login": "Login"
+}
+}

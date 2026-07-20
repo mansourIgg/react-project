@@ -1,0 +1,69 @@
+{
+  "common": {
+    "appName": "المتجر",
+    "home": "الرئيسية",
+    "profile": "الملف الشخصي",
+    "cart": "السلة",
+    "language": "اللغة",
+    "addToCart": "أضف إلى السلة",
+    "seeMore": "عرض المزيد",
+    "loading": "جارٍ التحميل..."
+  },
+  "dashboard": {
+    "featuredProducts": "منتجات مميزة",
+    "newArrivals": "وصل حديثًا",
+    "shopByBrand": "تسوق حسب الماركة"
+  },
+  "cart": {
+    "title": "سلتك",
+    "empty": "سلتك فارغة",
+    "continueShopping": "متابعة التسوق",
+    "total": "الإجمالي",
+    "checkout": "الدفع"
+  },
+  "checkout": {
+    "title": "الدفع",
+    "itemsSummary": "{{count}} عنصر — الإجمالي: {{total}}"
+  },
+  "auth": {
+    "login": {
+      "welcomeBack": "مرحبًا بعودتك",
+      "signInToAccount": "سجّل الدخول إلى حسابك",
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "signIn": "تسجيل الدخول",
+      "signingIn": "جارٍ تسجيل الدخول...",
+      "noAccount": "ليس لديك حساب؟",
+      "signUp": "إنشاء حساب"
+    },
+    "register": {
+      "createAccount": "إنشاء حساب",
+      "signUpToStart": "سجّل للبدء",
+      "fullName": "الاسم الكامل",
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "confirmPassword": "تأكيد كلمة المرور",
+      "createAccountButton": "إنشاء حساب",
+      "creatingAccount": "جارٍ إنشاء الحساب...",
+      "haveAccount": "لديك حساب بالفعل؟",
+      "signIn": "تسجيل الدخول"
+    }
+  },
+  "toast": {
+    "addedToCart": "تمت إضافة {{name}} إلى السلة",
+    "welcomeBack": "مرحبًا بعودتك!",
+    "accountCreated": "تم إنشاء الحساب بنجاح"
+  },
+  "profile": {
+  "loading": "جارٍ التحميل...",
+  "name": "الاسم",
+  "email": "البريد الإلكتروني",
+  "phone": "رقم الهاتف"
+},
+"loginRequired": {
+  "title": "تسجيل الدخول مطلوب",
+  "description": "تحتاج إلى تسجيل الدخول لعرض ملفك الشخصي.",
+  "cancel": "إلغاء",
+  "login": "تسجيل الدخول"
+}
+}
