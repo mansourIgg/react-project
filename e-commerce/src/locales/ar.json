@@ -7,12 +7,16 @@
     "language": "اللغة",
     "addToCart": "أضف إلى السلة",
     "seeMore": "عرض المزيد",
-    "loading": "جارٍ التحميل..."
+    "loading": "جارٍ التحميل...",
+    "logout": "تسجيل الخروج",
+    "addresses": "العناوين",
+    "orders": "الطلبات"
   },
   "dashboard": {
     "featuredProducts": "منتجات مميزة",
     "newArrivals": "وصل حديثًا",
-    "shopByBrand": "تسوق حسب الماركة"
+    "shopByBrand": "تسوق حسب الماركة",
+    "mainCategories": "الفئات الرئيسية"
   },
   "cart": {
     "title": "سلتك",
@@ -46,7 +50,10 @@
       "createAccountButton": "إنشاء حساب",
       "creatingAccount": "جارٍ إنشاء الحساب...",
       "haveAccount": "لديك حساب بالفعل؟",
-      "signIn": "تسجيل الدخول"
+      "signIn": "تسجيل الدخول",
+      "firstName": "الاسم الأول",
+      "lastName": "اسم العائلة",
+      "phoneNumber": "رقم الهاتف"
     }
   },
   "toast": {
@@ -65,5 +72,37 @@
   "description": "تحتاج إلى تسجيل الدخول لعرض ملفك الشخصي.",
   "cancel": "إلغاء",
   "login": "تسجيل الدخول"
+},
+"logoutConfirm": {
+  "title": "تسجيل الخروج",
+  "description": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+  "cancel": "إلغاء",
+  "confirm": "تسجيل الخروج"
+},
+"address": {
+  "title": "العناوين",
+  "empty": "لا توجد عناوين محفوظة بعد.",
+  "city": "المدينة",
+  "country": "الدولة",
+  "shortAddress": "العنوان المختصر",
+  "buildingNumber": "رقم المبنى",
+  "floorNumber": "رقم الطابق",
+  "apartmentNumber": "رقم الشقة",
+  "specialMarque": "علامة مميزة",
+  "makeDefault": "اجعله الافتراضي",
+  "defaultAddress": "العنوان الافتراضي",
+  "emptyTitle": "لا توجد عناوين بعد",
+  "emptyDescription": "أضف عنوانك الأول لتسريع عملية الدفع.",
+  "addNew": "إضافة عنوان",
+  "street": "الشارع",
+  "region": "المنطقة",
+  "selectRegion": "اختر المنطقة",
+  "selectCity": "اختر المدينة",
+  "postcode": "الرمز البريدي",
+  "telephone": "رقم الهاتف",
+  "saved": "تم حفظ العنوان بنجاح",
+  "save": "حفظ العنوان",
+  "saving": "جارٍ الحفظ...",
+  "selectCountry": "اختر الدولة"
 }
 }

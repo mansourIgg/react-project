@@ -7,12 +7,16 @@
     "language": "Language",
     "addToCart": "Add to cart",
     "seeMore": "See more",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "logout": "Logout",
+    "addresses": "Addresses",
+    "orders": "Orders"
   },
   "dashboard": {
     "featuredProducts": "Featured Products",
     "newArrivals": "New Arrivals",
-    "shopByBrand": "Shop by Brand"
+    "shopByBrand": "Shop by Brand",
+    "mainCategories": "Main Categories"
   },
   "cart": {
     "title": "Your Cart",
@@ -46,7 +50,10 @@
       "createAccountButton": "Create account",
       "creatingAccount": "Creating account...",
       "haveAccount": "Already have an account?",
-      "signIn": "Sign in"
+      "signIn": "Sign in",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "phoneNumber": "Phone number"
     }
   },
   "toast": {
@@ -65,5 +72,37 @@
   "description": "You need to sign in to view your profile.",
   "cancel": "Cancel",
   "login": "Login"
+},
+"logoutConfirm": {
+  "title": "Log out",
+  "description": "Are you sure you want to logout?",
+  "cancel": "Cancel",
+  "confirm": "Logout"
+},
+"address": {
+  "title": "Addresses",
+  "empty": "No addresses saved yet.",
+  "city": "City",
+  "country": "Country",
+  "shortAddress": "Short address",
+  "buildingNumber": "Building number",
+  "floorNumber": "Floor number",
+  "apartmentNumber": "Apartment number",
+  "specialMarque": "Special mark",
+  "makeDefault": "Make default",
+  "defaultAddress": "Default address",
+  "emptyTitle": "No addresses yet",
+  "emptyDescription": "Add your first address to make checkout faster.",
+  "addNew": "Add address",
+  "street": "Street",
+  "region": "Region",
+  "selectRegion": "Select region",
+  "selectCity": "Select city",
+  "postcode": "Postcode",
+  "telephone": "Phone number",
+  "saved": "Address saved successfully",
+  "save": "Save address",
+  "saving": "Saving...",
+  "selectCountry": "Select country"
 }
 }

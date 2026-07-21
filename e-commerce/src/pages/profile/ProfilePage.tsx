@@ -28,19 +28,23 @@ export default function ProfilePage() {
           className="h-28 w-28 rounded-full object-cover"
         />
         <div className="w-full space-y-3">
-          <div className="flex flex-col gap-1 border-b pb-3">
-            <span className="text-sm text-muted-foreground">{t("profile.name")}</span>
-            <span className="font-medium">{user?.name}</span>
-          </div>
-          <div className="flex flex-col gap-1 border-b pb-3">
-            <span className="text-sm text-muted-foreground">{t("profile.email")}</span>
-            <span className="font-medium">{user?.email}</span>
-          </div>
-          <div className="flex flex-col gap-1 pb-3">
-            <span className="text-sm text-muted-foreground">{t("profile.phone")}</span>
-            <span className="font-medium">{user?.phone}</span>
-          </div>
-        </div>
+  <div className="flex flex-col gap-1 border-b pb-3">
+    <span className="text-sm text-muted-foreground">{t("auth.register.firstName")}</span>
+    <span className="font-medium">{user?.name}</span>
+  </div>
+  <div className="flex flex-col gap-1 border-b pb-3">
+    <span className="text-sm text-muted-foreground">{t("auth.register.lastName")}</span>
+    <span className="font-medium">{user?.last_name}</span>
+  </div>
+  <div className="flex flex-col gap-1 border-b pb-3">
+    <span className="text-sm text-muted-foreground">{t("auth.register.email")}</span>
+    <span className="font-medium">{user?.email}</span>
+  </div>
+  <div className="flex flex-col gap-1 pb-3">
+    <span className="text-sm text-muted-foreground">{t("auth.register.phoneNumber")}</span>
+    <span className="font-medium">{user?.phone_number}</span>
+  </div>
+</div>
       </div>
     </>
   )

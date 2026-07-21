@@ -1,51 +1,92 @@
 // src/pages/dashboard/DashboardPage.tsx
+import { useEffect, useState } from "react"
 import { toast } from "sonner"
+import { Loader2 } from "lucide-react"
+import { Header } from "@/components/common/Header"
 import { ImageSlider } from "@/features/dashboard/components/ImageSlider"
+import { CategoryList } from "@/features/dashboard/components/CategoryList"
 import { ProductRow } from "@/features/dashboard/components/ProductRow"
 import { BrandRow } from "@/features/dashboard/components/BrandRow"
+import { dashboardService } from "@/features/dashboard/services/dashboard.service"
+import { mapAdToSlide, mapApiProduct, mapApiBrand } from "@/features/dashboard/utils/dashboard-mappers"
 import { useCart } from "@/features/cart/context/CartContext"
-import {
-  mockSliderImages,
-  mockFeaturedProducts,
-  mockNewArrivals,
-  mockBrands,
-} from "@/features/dashboard/data/mock-dashboard"
+import { ApiError } from "@/lib/api-response"
+import type { HomePageApiData } from "@/features/dashboard/types/dashboard-api.types"
 import type { Product } from "@/features/dashboard/types/dashboard.types"
-import { Header } from "@/components/common/Header"
 import { useTranslation } from "react-i18next"
+import { DashboardSkeleton } from "@/features/dashboard/components/DashboardSkeleton"
 
 export default function DashboardPage() {
-  const { t } = useTranslation()
   const { addItem } = useCart()
-  const handleAddToCart = (product: Product) => {
-    // TODO: wire to real cart logic/service
-    addItem(product);
-    toast.success(t("toast.addedToCart", { name: product.name }))
+  const [homeData, setHomeData] = useState<HomePageApiData | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const { t } = useTranslation();
+  useEffect(() => {
+    dashboardService
+      .getHomePage()
+      .then(setHomeData)
+      .catch((error) => {
+        const message = error instanceof ApiError ? error.message : "Failed to load homepage"
+        toast.error(message)
+      })
+      .finally(() => setIsLoading(false))
+  }, [])
+
+  const handleAddToCart = async (product: Product) => {
+  try {
+    const message = await addItem(product)
+    toast.success(message)
+  } catch (error) {
+    toast.error(error instanceof ApiError ? error.message : "Something went wrong.")
+  }
+}
+
+  if (isLoading) {
+  return (
+    <>
+      <Header />
+      <DashboardSkeleton />
+    </>
+  )
+}
+
+  if (!homeData) {
+    return (
+      <>
+        <Header />
+        <p className="py-20 text-center text-muted-foreground">Nothing to show right now.</p>
+      </>
+    )
   }
 
   return (
     <>
       <Header />
-      
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-6">
-        <ImageSlider images={mockSliderImages} />
+        <ImageSlider images={homeData.ads.map(mapAdToSlide)} />
+
+        <h2 className="text-center text-lg font-semibold">{t("dashboard.mainCategories")}</h2>
+        <CategoryList categories={homeData.category} />
 
         <ProductRow
-          title={t("dashboard.featuredProducts")}
-          products={mockFeaturedProducts}
-          seeMoreHref="/products/featured"
+          title={homeData.recommended.name}
+          products={homeData.recommended.products.map(mapApiProduct)}
+          seeMoreHref={`/products/section-${homeData.recommended.id}`}
           onAddToCart={handleAddToCart}
         />
 
         <ProductRow
-          title={t("dashboard.newArrivals")}
-          products={mockNewArrivals}
-          seeMoreHref="/products/new-arrivals"
+          title={homeData.popular.name}
+          products={homeData.popular.products.map(mapApiProduct)}
+          seeMoreHref={`/products/section-${homeData.popular.id}`}
           onAddToCart={handleAddToCart}
         />
 
-        <BrandRow title={t("dashboard.shopByBrand")} 
-          brands={mockBrands} seeMoreHref="/brands" />
+        <BrandRow
+          title="Shop by Brand"
+          brands={homeData.brand.map(mapApiBrand)}
+          seeMoreHref="/brands"
+        />
       </div>
     </>
   )

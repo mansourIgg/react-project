@@ -5,6 +5,8 @@ import { ProductCard } from "@/features/dashboard/components/ProductCard"
 import { mockFeaturedProducts } from "@/features/dashboard/data/mock-dashboard"
 import type { Product } from "@/features/dashboard/types/dashboard.types"
 import { useCart } from "@/features/cart/context/CartContext"
+import { Header } from "@/components/common/Header"
+import { ApiError } from "@/lib/api-response"
 
 interface CategoryLocationState {
   title?: string
@@ -20,12 +22,18 @@ export default function CategoryPage() {
 
   const title = state?.title ?? slug?.replace(/-/g, " ") ?? "Products"
   const { addItem } = useCart()
-  const handleAddToCart = (product: Product) => {
-    addItem(product);
-    toast.success(`${product.name} added to cart`)
+  const handleAddToCart = async (product: Product) => {
+    try {
+      const message = await addItem(product)
+      toast.success(message)
+    } catch (error) {
+      toast.error(error instanceof ApiError ? error.message : "Something went wrong.")
+    }
   }
 
   return (
+    <>
+    <Header />
     <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-6">
       <h1 className="text-2xl font-semibold capitalize">{title}</h1>
 
@@ -40,5 +48,6 @@ export default function CategoryPage() {
         ))}
       </div>
     </div>
+    </>
   )
 }

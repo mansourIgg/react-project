@@ -2,18 +2,20 @@
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Link, useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { FormTextField } from "@/components/common/FormTextField"
 import { loginSchema, type LoginFormValues } from "../schemas/auth.schema"
 import { authService } from "../services/auth.service"
 import { useAuth } from "../context/AuthContext"
-import { toast } from "sonner"
-import { useTranslation } from "react-i18next"
+import { ApiError } from "@/lib/api-response"
 
 export function LoginForm() {
-  const navigate = useNavigate()
-  const { setUser } = useAuth();
   const { t } = useTranslation()
+  const navigate = useNavigate()
+  const { setUser } = useAuth()
+
   const {
     control,
     handleSubmit,
@@ -23,21 +25,15 @@ export function LoginForm() {
     defaultValues: { email: "", password: "" },
   })
 
-  // inside LoginForm's onSubmit, after a successful API call
-  //const { setUser } = useAuth()
-  // ...
-  //const response = await authService.login(values)
-  //setUser(response.data.user) // { name, email, phone }
-
   const onSubmit = async (values: LoginFormValues) => {
     try {
-      const response = await authService.login(values)
-      setUser(response.data.user) 
-      toast.success("Account created successfully")
-      // TODO: store token, redirect to dashboard
-      navigate("/dashboard")
+      const data = await authService.login(values)
+      setUser(data.customer)
+      toast.success(t("toast.welcomeBack"))
+      navigate("/dashboard", { replace: true })
     } catch (error) {
-      toast.error("Invalid email or password") // TODO: surface error via toast
+      const message = error instanceof ApiError ? error.message : t("common.somethingWentWrong")
+      toast.error(message)
     }
   }
 

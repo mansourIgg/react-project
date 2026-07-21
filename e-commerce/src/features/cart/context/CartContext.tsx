@@ -1,7 +1,8 @@
 // src/features/cart/context/CartContext.tsx
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react"
-import type { CartItem } from "../types/cart.types"
-import { cartStorage } from "../services/cart.storage"
+import { cartService } from "../services/cart.service"
+import { useAuth } from "@/features/auth/context/AuthContext"
+import { guestCartIdStorage } from "../services/cart-id.storage"
 
 interface AddableProduct {
   id: string
@@ -11,71 +12,60 @@ interface AddableProduct {
 }
 
 interface CartContextValue {
-  items: CartItem[]
-  isLoading: boolean
   totalItems: number
-  totalPrice: number
-  addItem: (product: AddableProduct, quantity?: number) => void
-  setQuantity: (id: string, quantity: number) => void
-  removeItem: (id: string) => void
-  clearCart: () => void
+  isLoading: boolean
+  addItem: (product: AddableProduct, qty?: number) => Promise<string>
+  setTotalItems: (count: number) => void
 }
 
 const CartContext = createContext<CartContextValue | undefined>(undefined)
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([])
+  const { user, isLoading: isAuthLoading } = useAuth()
+  const [totalItems, setTotalItems] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    cartStorage.get().then((cached) => {
-      setItems(cached ?? [])
-      setIsLoading(false)
+    if (isAuthLoading) return
+
+    async function loadCount() {
+      const customerId = user ? Number(user.customer_id) : 0
+
+      if (customerId === 0) {
+        const guestCartId = await guestCartIdStorage.get()
+        if (!guestCartId) {
+          setTotalItems(0)
+          setIsLoading(false)
+          return
+        }
+      }
+
+      try {
+        const response = await cartService.viewCart(customerId)
+        setTotalItems(response.cart.items_count ?? 0)
+      } catch {
+        setTotalItems(0)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadCount()
+  }, [user, isAuthLoading])
+
+  const addItem = async (product: AddableProduct, qty = 1) => {
+    const customerId = user ? Number(user.customer_id) : 0
+    const response = await cartService.addToCart({
+      customerId,
+      productId: Number(product.id),
+      qty,
     })
-  }, [])
-
-  const persist = (next: CartItem[]) => {
-    setItems(next)
-    cartStorage.set(next)
+    setTotalItems(response.data.items_count)
+    return response.message
   }
-
-  const addItem = (product: AddableProduct, quantity = 1) => {
-    const existing = items.find((item) => item.id === product.id)
-    if (existing) {
-      persist(
-        items.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item
-        )
-      )
-    } else {
-      persist([...items, { ...product, quantity }])
-    }
-  }
-
-  const setQuantity = (id: string, quantity: number) => {
-    if (quantity <= 0) {
-      persist(items.filter((item) => item.id !== id))
-      return
-    }
-    persist(items.map((item) => (item.id === id ? { ...item, quantity } : item)))
-  }
-
-  const removeItem = (id: string) => {
-    persist(items.filter((item) => item.id !== id))
-  }
-
-  const clearCart = () => {
-    persist([])
-    cartStorage.clear()
-  }
-
-  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0)
-  const totalPrice = items.reduce((sum, item) => sum + item.quantity * item.price, 0)
 
   return (
-    <CartContext.Provider
-      value={{ items, isLoading, totalItems, totalPrice, addItem, setQuantity, removeItem, clearCart }}
-    >
+    <CartContext.Provider value={{ totalItems, isLoading, addItem, setTotalItems }}>
       {children}
     </CartContext.Provider>
   )

@@ -1,3 +1,4 @@
+// vite.config.ts
 import path from "path"
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
@@ -8,6 +9,15 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+    },
+  },
+  server: {
+    proxy: {
+      "/api-proxy": {
+        target: "https://staging.silkbooth.com",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api-proxy/, "/rest"),
+      },
     },
   },
 })

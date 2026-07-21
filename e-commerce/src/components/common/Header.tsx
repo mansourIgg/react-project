@@ -1,7 +1,7 @@
 // src/components/common/Header.tsx
 import { useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import { Home, User, ShoppingCart, Globe } from "lucide-react"
+import { Home, User, ShoppingCart, Globe, LogOut, MapPin, Package } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { useCart } from "@/features/cart/context/CartContext"
 import { useAuth } from "@/features/auth/context/AuthContext"
@@ -14,19 +14,22 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { LoginRequiredDialog } from "./LoginRequiredDialog"
+import { LogoutConfirmDialog } from "./LogoutConfirmDialog"
 
 export function Header() {
   const { totalItems } = useCart()
-  const { user } = useAuth()
+  const { user, logout } = useAuth()
   const { language, setLanguage } = useLanguage()
   const { t } = useTranslation()
   const { pathname } = useLocation()
   const navigate = useNavigate()
 
   const [loginDialogOpen, setLoginDialogOpen] = useState(false)
+  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false)
 
   const isDashboard = pathname === "/dashboard"
   const isCart = pathname === "/cart"
+  const isAddresses = pathname.startsWith("/addresses")
 
   const handleProfileClick = () => {
     if (user) {
@@ -35,6 +38,24 @@ export function Header() {
       setLoginDialogOpen(true)
     }
   }
+
+  const handleConfirmLogout = () => {
+    logout()
+    setLogoutDialogOpen(false)
+    navigate("/login", { replace: true })
+  }
+
+  const handleAddressesClick = () => {
+  if (user) {
+    navigate("/addresses")
+  } else {
+    setLoginDialogOpen(true)
+  }
+}
+
+const handleOrdersClick = () => {
+  // TODO: wire up orders page once available
+}
 
   return (
     <header className="sticky top-0 z-10 border-b bg-background">
@@ -46,27 +67,43 @@ export function Header() {
         <div className="flex items-center gap-2">
           {!isDashboard && (
             <Button variant="ghost" size="icon" asChild>
-              <Link to="/dashboard" aria-label={t("common.home")}>
+              <Link to="/dashboard" aria-label={t("common.home")} title={t("common.home")}>
                 <Home className="size-5" />
               </Link>
             </Button>
           )}
 
+          <Button variant="ghost" size="icon" onClick={handleProfileClick} aria-label={t("common.profile")} title={t("common.profile")}>
+            <User className="size-5" />
+          </Button>
+          
+          {!isAddresses && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleAddressesClick}
+              aria-label={t("common.addresses")}
+              title={t("common.addresses")}
+            >
+              <MapPin className="size-5" />
+            </Button>
+          )}
           <Button
             variant="ghost"
             size="icon"
-            onClick={handleProfileClick}
-            aria-label={t("common.profile")}
+            onClick={handleOrdersClick}
+            aria-label={t("common.orders")}
+            title={t("common.orders")}
           >
-            <User className="size-5" />
+            <Package className="size-5" />
           </Button>
 
           {!isCart && (
             <Button variant="ghost" size="icon" asChild className="relative">
-              <Link to="/cart" aria-label={t("common.cart")}>
+              <Link to="/cart" aria-label={t("common.cart")} title={t("common.cart")}>
                 <ShoppingCart className="size-5" />
                 {totalItems > 0 && (
-                  <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-medium text-primary-foreground">
+                  <span className="absolute -end-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-medium text-primary-foreground">
                     {totalItems}
                   </span>
                 )}
@@ -76,29 +113,39 @@ export function Header() {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" aria-label={t("common.language")}>
+              <Button variant="ghost" size="icon" aria-label={t("common.language")} title={t("common.language")}>
                 <Globe className="size-5" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem
-                onClick={() => setLanguage("en")}
-                className={language === "en" ? "font-semibold" : ""}
-              >
+              <DropdownMenuItem onClick={() => setLanguage("en")} className={language === "en" ? "font-semibold" : ""}>
                 English
               </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => setLanguage("ar")}
-                className={language === "ar" ? "font-semibold" : ""}
-              >
+              <DropdownMenuItem onClick={() => setLanguage("ar")} className={language === "ar" ? "font-semibold" : ""}>
                 العربية
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+
+          {user && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setLogoutDialogOpen(true)}
+              aria-label={t("common.logout")}
+            >
+              <LogOut className="size-5" />
+            </Button>
+          )}
         </div>
       </div>
 
       <LoginRequiredDialog open={loginDialogOpen} onOpenChange={setLoginDialogOpen} />
+      <LogoutConfirmDialog
+        open={logoutDialogOpen}
+        onOpenChange={setLogoutDialogOpen}
+        onConfirm={handleConfirmLogout}
+      />
     </header>
   )
 }

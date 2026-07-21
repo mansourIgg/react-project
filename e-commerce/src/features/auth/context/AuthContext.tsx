@@ -1,17 +1,19 @@
+// src/features/auth/context/AuthContext.tsx
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react"
-import type { User } from "../types/user"
+import type { Customer } from "../types/customer"
 import { userStorage } from "../services/user.storage"
 
 interface AuthContextValue {
-  user: User | null
+  user: Customer | null
   isLoading: boolean
-  setUser: (user: User | null) => void
+  setUser: (user: Customer | null) => void
+  logout: () => void
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUserState] = useState<User | null>(null)
+  const [user, setUserState] = useState<Customer | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -21,7 +23,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     })
   }, [])
 
-  const setUser = (user: User | null) => {
+  const setUser = (user: Customer | null) => {
     setUserState(user)
     if (user) {
       userStorage.set(user)
@@ -30,8 +32,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  const logout = () => {
+    setUser(null)
+  }
+
   return (
-    <AuthContext.Provider value={{ user, isLoading, setUser }}>
+    <AuthContext.Provider value={{ user, isLoading, setUser, logout }}>
       {children}
     </AuthContext.Provider>
   )

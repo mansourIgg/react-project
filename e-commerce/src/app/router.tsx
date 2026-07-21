@@ -9,6 +9,8 @@ import { RequireNonEmptyCart } from "@/features/cart/components/RequireNonEmptyC
 import CheckoutPage from "@/pages/checkout/CheckoutPage"
 import ProfilePage from "@/pages/profile/ProfilePage"
 import { RequireAuth } from "@/features/auth/components/RequireAuth"
+import AddressesPage from "@/pages/address/AddressesPage"
+import AddAddressPage from "@/pages/address/AddAddressPage"
 
 export const router = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
@@ -16,6 +18,8 @@ export const router = createBrowserRouter([
   { path: "/dashboard", element: <DashboardPage /> },
   { path: "/products/:slug", element: <CategoryPage /> },
   { path: "/cart", element: <CartPage /> },
+  { path: "/addresses/new", element: <AddAddressPage /> },
+  { path: "/addresses", element: <AddressesPage /> },
   {
     element: <RequireNonEmptyCart />,
     children: [{ path: "/checkout", element: <CheckoutPage /> }],
