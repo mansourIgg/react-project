@@ -11,6 +11,7 @@ import { useAuth } from "@/features/auth/context/AuthContext"
 import { useCart } from "@/features/cart/context/CartContext"
 import { handleAddToCartGuarded } from "@/features/cart/utils/handle-add-to-cart"
 import type { CategoryApiProduct } from "@/features/dashboard/types/product-api.types"
+import { useCurrency } from "@/lib/use-currency"
 
 interface CategoryLocationState {
   title?: string
@@ -48,6 +49,7 @@ export default function CategoryPage() {
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [isLoading, setIsLoading] = useState(true)
+  const { format } = useCurrency()
 
   useEffect(() => {
     setIsLoading(true)
@@ -86,7 +88,7 @@ export default function CategoryPage() {
     <>
       <Header />
       <div className="flex flex-col gap-6 px-6 py-6">
-        <h1 className="text-2xl font-semibold capitalize">{title}</h1>
+        <h1 className="text-2xl font-semibold capitalize text-start">{title}</h1>
 
         {isLoading ? (
           <ProductGridSkeleton />
@@ -101,7 +103,7 @@ export default function CategoryPage() {
                     className="aspect-square w-full rounded-lg object-cover"
                   />
                   <p className="truncate text-sm font-medium">{product.name}</p>
-                  <p className="text-sm text-muted-foreground">${product.price}</p>
+                  <p className="text-sm text-muted-foreground">{format(product.price)}</p>
                   <Button size="sm" onClick={() => onAddToCart(product)}>
                     {t("common.addToCart")}
                   </Button>

@@ -9,6 +9,7 @@ import { DeleteItemConfirmDialog } from "./DeleteItemConfirmDialog"
 import { cartService } from "../services/cart.service"
 import { ApiError } from "@/lib/api-response"
 import type { CartSellerGroup, CartProduct } from "../types/cart-api.types"
+import { useCurrency } from "@/lib/use-currency"
 
 interface SellerProductGroupProps {
   group: CartSellerGroup
@@ -19,6 +20,7 @@ interface SellerProductGroupProps {
 
 export function SellerProductGroup({ group, customerId, onItemDeleted, onQtyChanged }: SellerProductGroupProps) {
   const { t } = useTranslation()
+  const { format } = useCurrency()
   const [pendingDeleteItem, setPendingDeleteItem] = useState<CartProduct | null>(null)
   const [updatingItemId, setUpdatingItemId] = useState<string | null>(null)
 
@@ -71,7 +73,7 @@ export function SellerProductGroup({ group, customerId, onItemDeleted, onQtyChan
               disabled={updatingItemId === item.item_id}
               onChange={(newQty) => handleQtyChange(item, newQty)}
             />
-            <p className="text-sm text-muted-foreground">${item["sub-total"]}</p>
+            <p className="text-sm text-muted-foreground">{format(item["sub-total"])}</p>
           </div>
           <Button
             variant="ghost"

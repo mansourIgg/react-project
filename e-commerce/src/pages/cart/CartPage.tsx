@@ -13,10 +13,12 @@ import { guestCartIdStorage } from "@/features/cart/services/cart-id.storage"
 import { SellerProductGroup } from "@/features/cart/components/SellerProductGroup"
 import { ApiError } from "@/lib/api-response"
 import type { CartData } from "@/features/cart/types/cart-api.types"
+import { useCurrency } from "@/lib/use-currency"
 
 export default function CartPage() {
   const { t } = useTranslation()
   const { user } = useAuth()
+  const { format } = useCurrency()
   const [cart, setCart] = useState<CartData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -102,7 +104,7 @@ const handleQtyChanged = (itemId: string, qty: number) => {
 
             <div className="flex items-center justify-between pt-2">
               <p className="text-lg font-semibold">
-               {t("cart.total")}: {cart.grandtotal ?? "0.00"} {cart.currency_code ?? ""}
+               {t("cart.total")}: {format(cart.grandtotal ?? 0)}
               </p>
               <Button asChild size="lg">
                 <Link to="/checkout">{t("cart.checkout")}</Link>
