@@ -25,6 +25,7 @@ export interface ApiProduct {
   special_price: string
   small_image: string
   thumb_image: string
+  type_id?: string | null
 }
 
 export interface ApiProductSection {

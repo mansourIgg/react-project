@@ -12,6 +12,7 @@ import type { Address } from "@/features/address/types/address.types"
 import { MapPinOff } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useNavigate } from "react-router-dom"
+import { DeleteAddressConfirmDialog } from "@/features/address/components/DeleteAddressConfirmDialog"
 
 export default function AddressesPage() {
   const { t } = useTranslation()
@@ -19,6 +20,57 @@ export default function AddressesPage() {
   const [addresses, setAddresses] = useState<Address[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate()
+  const [settingDefaultId, setSettingDefaultId] = useState<string | null>(null)
+
+
+  const [pendingDeleteAddress, setPendingDeleteAddress] = useState<Address | null>(null)
+
+const handleConfirmDelete = async () => {
+  if (!pendingDeleteAddress || !user) return
+  try {
+    const response = await addressService.deleteAddress(
+      Number(user.customer_id),
+      Number(pendingDeleteAddress.address_id)
+    )
+    toast.success(response.message)
+    setAddresses((prev) => prev.filter((a) => a.address_id !== pendingDeleteAddress.address_id))
+  } catch (error) {
+    toast.error(error instanceof ApiError ? error.message : t("common.somethingWentWrong"))
+  } finally {
+    setPendingDeleteAddress(null)
+  }
+}
+
+const loadAddresses = () => {
+  if (!user) return
+  setIsLoading(true)
+  addressService
+    .getAddresses(Number(user.customer_id))
+    .then((data) => setAddresses(data.address))
+    .catch((error) => {
+      toast.error(error instanceof ApiError ? error.message : t("common.somethingWentWrong"))
+    })
+    .finally(() => setIsLoading(false))
+}
+
+const handleMakeDefault = async (address: Address) => {
+  if (!user) return
+  setSettingDefaultId(address.address_id)
+  try {
+    const response = await addressService.updateAddress(user.customer_id, address.address_id)
+    toast.success(response.message)
+    loadAddresses() // reload the page's data after success
+  } catch (error) {
+    toast.error(error instanceof ApiError ? error.message : t("common.somethingWentWrong"))
+  } finally {
+    setSettingDefaultId(null)
+  }
+}
+
+useEffect(() => {
+  loadAddresses()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [user])
 
   useEffect(() => {
     if (!user) return
@@ -58,11 +110,23 @@ export default function AddressesPage() {
   </div>
 )  : (
           <div className="flex flex-col gap-4">
-            {addresses.map((address) => (
-              <AddressCard key={address.address_id} address={address} />
-            ))}
-          </div>
+                {addresses.map((address) => (
+                    <AddressCard
+                        key={address.address_id}
+                        address={address}
+                        onDeleteClick={setPendingDeleteAddress}
+                        onMakeDefaultClick={handleMakeDefault}
+                        isSettingDefault={settingDefaultId === address.address_id}
+                    />
+                ))}
+            </div>
         )}
+
+        <DeleteAddressConfirmDialog
+            open={pendingDeleteAddress !== null}
+            onOpenChange={(open) => !open && setPendingDeleteAddress(null)}
+            onConfirm={handleConfirmDelete}
+        />
       </div>
     </>
   )

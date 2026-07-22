@@ -45,6 +45,30 @@ export default function CartPage() {
     load()
   }, [user])
 
+  const handleItemDeleted = (itemId: string) => {
+  setCart((prev) => {
+    if (!prev) return prev
+    const updatedProducts = prev.products
+      .map((group) => ({
+        ...group,
+        product: group.product.filter((p) => p.item_id !== itemId),
+      }))
+      .filter((group) => group.product.length > 0)
+    return { ...prev, products: updatedProducts, items_count: (prev.items_count ?? 1) - 1 }
+  })
+}
+
+const handleQtyChanged = (itemId: string, qty: number) => {
+  setCart((prev) => {
+    if (!prev) return prev
+    const updatedProducts = prev.products.map((group) => ({
+      ...group,
+      product: group.product.map((p) => (p.item_id === itemId ? { ...p, qty } : p)),
+    }))
+    return { ...prev, products: updatedProducts }
+  })
+}
+
   const isEmpty = !cart || cart.products.length === 0 || cart.items_count === 0
 
   return (
@@ -66,7 +90,13 @@ export default function CartPage() {
           <>
             <div className="flex flex-col gap-4">
               {cart.products.map((group) => (
-                <SellerProductGroup key={group.seller_id} group={group} />
+                <SellerProductGroup
+                  key={group.seller_id}
+                  group={group}
+                  customerId={user ? Number(user.customer_id) : 0}
+                  onItemDeleted={handleItemDeleted}
+                  onQtyChanged={handleQtyChanged}
+                />
               ))}
             </div>
 

@@ -11,6 +11,7 @@ import ProfilePage from "@/pages/profile/ProfilePage"
 import { RequireAuth } from "@/features/auth/components/RequireAuth"
 import AddressesPage from "@/pages/address/AddressesPage"
 import AddAddressPage from "@/pages/address/AddAddressPage"
+import ProductDetailPage from "@/pages/product/ProductDetailPage"
 
 export const router = createBrowserRouter([
   { path: "/login", element: <LoginPage /> },
@@ -20,6 +21,7 @@ export const router = createBrowserRouter([
   { path: "/cart", element: <CartPage /> },
   { path: "/addresses/new", element: <AddAddressPage /> },
   { path: "/addresses", element: <AddressesPage /> },
+  { path: "/products/detail/:id", element: <ProductDetailPage /> },
   {
     element: <RequireNonEmptyCart />,
     children: [{ path: "/checkout", element: <CheckoutPage /> }],

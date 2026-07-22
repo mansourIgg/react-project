@@ -15,12 +15,17 @@ import type { HomePageApiData } from "@/features/dashboard/types/dashboard-api.t
 import type { Product } from "@/features/dashboard/types/dashboard.types"
 import { useTranslation } from "react-i18next"
 import { DashboardSkeleton } from "@/features/dashboard/components/DashboardSkeleton"
+import { useNavigate } from "react-router-dom"
+import { handleAddToCartGuarded } from "@/features/cart/utils/handle-add-to-cart"
+
 
 export default function DashboardPage() {
   const { addItem } = useCart()
   const [homeData, setHomeData] = useState<HomePageApiData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const { t } = useTranslation();
+  const navigate = useNavigate()
+
   useEffect(() => {
     dashboardService
       .getHomePage()
@@ -32,13 +37,21 @@ export default function DashboardPage() {
       .finally(() => setIsLoading(false))
   }, [])
 
-  const handleAddToCart = async (product: Product) => {
-  try {
-    const message = await addItem(product)
-    toast.success(message)
-  } catch (error) {
-    toast.error(error instanceof ApiError ? error.message : "Something went wrong.")
-  }
+  const handleAddToCart = (product: Product) => {
+  handleAddToCartGuarded({
+    entityId: product.id,
+    isConfigurable: product.isConfigurable,
+    addItem,
+    navigate,
+    product: {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      imageUrl: product.imageUrl,
+    },
+    configurableMessage: t("product.chooseOptionsFirst"),
+    genericErrorMessage: t("common.somethingWentWrong"),
+  })
 }
 
   if (isLoading) {
@@ -70,6 +83,7 @@ export default function DashboardPage() {
 
         <ProductRow
           title={homeData.recommended.name}
+          categoryId={homeData.recommended.id}
           products={homeData.recommended.products.map(mapApiProduct)}
           seeMoreHref={`/products/section-${homeData.recommended.id}`}
           onAddToCart={handleAddToCart}
@@ -77,6 +91,7 @@ export default function DashboardPage() {
 
         <ProductRow
           title={homeData.popular.name}
+          categoryId={homeData.popular.id}
           products={homeData.popular.products.map(mapApiProduct)}
           seeMoreHref={`/products/section-${homeData.popular.id}`}
           onAddToCart={handleAddToCart}

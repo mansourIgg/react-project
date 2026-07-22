@@ -2,6 +2,7 @@
 import { apiRequest , apiRequestRaw} from "@/lib/api-client"
 import type { AddToCartResponse, ViewCartResponse } from "../types/cart-api.types"
 import { guestCartIdStorage } from "./cart-id.storage"
+import type { CartMutationResponse } from "../types/cart-mutations.types"
 
 interface AddToCartParams {
   customerId: number
@@ -36,6 +37,19 @@ addToCart: async ({ customerId, productId, qty = 1 }: AddToCartParams) => {
 
   return response
 },
+deleteItem: (customerId: number, itemId: number) =>
+  apiRequestRaw<CartMutationResponse>({
+    method: "POST",
+    url: "/V1/mobiconnect/checkout/delete",
+    data: { customer_id: customerId, item_id: itemId },
+  }),
+
+updateQty: (customerId: number, itemId: number, qty: number) =>
+  apiRequestRaw<CartMutationResponse>({
+    method: "POST",
+    url: "/V1/mobiconnect/checkout/updateqty",
+    data: { customer_id: customerId, item_id: itemId, qty },
+  }),
   viewCart: async (customerId: number) => {
   const payload: Record<string, unknown> = { customer_id: customerId }
 

@@ -10,7 +10,9 @@
     "loading": "جارٍ التحميل...",
     "logout": "تسجيل الخروج",
     "addresses": "العناوين",
-    "orders": "الطلبات"
+    "orders": "الطلبات",
+    "previous": "السابق", 
+    "next": "التالي"
   },
   "dashboard": {
     "featuredProducts": "منتجات مميزة",
@@ -23,7 +25,12 @@
     "empty": "سلتك فارغة",
     "continueShopping": "متابعة التسوق",
     "total": "الإجمالي",
-    "checkout": "الدفع"
+    "checkout": "الدفع",
+    "deleteItem": "حذف العنصر",
+    "deleteConfirmTitle": "إزالة العنصر",
+    "deleteConfirmDescription": "هل أنت متأكد أنك تريد إزالة هذا العنصر من سلتك؟",
+    "deleteCancel": "إلغاء",
+    "deleteConfirm": "إزالة"
   },
   "checkout": {
     "title": "الدفع",
@@ -88,7 +95,7 @@
   "buildingNumber": "رقم المبنى",
   "floorNumber": "رقم الطابق",
   "apartmentNumber": "رقم الشقة",
-  "specialMarque": "علامة مميزة",
+  "specialMark": "علامة مميزة",
   "makeDefault": "اجعله الافتراضي",
   "defaultAddress": "العنوان الافتراضي",
   "emptyTitle": "لا توجد عناوين بعد",
@@ -103,6 +110,13 @@
   "saved": "تم حفظ العنوان بنجاح",
   "save": "حفظ العنوان",
   "saving": "جارٍ الحفظ...",
-  "selectCountry": "اختر الدولة"
-}
+  "selectCountry": "اختر الدولة",
+  "deleteAddress": "حذف العنوان",
+  "deleteConfirmTitle": "إزالة العنوان",
+  "deleteConfirmDescription": "هل أنت متأكد أنك تريد إزالة هذا العنوان؟",
+  "deleteCancel": "إلغاء",
+  "deleteConfirm": "إزالة",
+  "settingDefault": "جارٍ التعيين..."
+},
+"product": { "chooseOptionsFirst": "يرجى اختيار الخيارات المطلوبة أولاً" }
 }

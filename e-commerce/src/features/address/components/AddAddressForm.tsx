@@ -37,15 +37,18 @@ export function AddAddressForm() {
   } = useForm<AddAddressFormValues>({
     resolver: zodResolver(addAddressSchema),
     defaultValues: {
-      countryId: "SA",
-      firstName: "",
-      lastName: "",
-      street: "",
-      regionId: "",
-      cityId: "",
-      postcode: "",
-      telephone: "",
-      shortAddress: "",
+        countryId: "SA",
+        firstName: user?.name ?? "",
+        lastName: user?.last_name ?? "",
+        street: "",
+        regionId: "",
+        cityId: "",
+        postcode: "",
+        telephone: user?.phone_number ?? "",
+        shortAddress: "",
+        floorNumber: "",
+        apartmentNumber: "",
+        specialMark: "",
     },
   })
 
@@ -110,14 +113,14 @@ export function AddAddressForm() {
         latitude: "",
         longitude: "",
         building_number: "",
-        floor_apartment: "",
+        floor_apartment: values.floorNumber ?? "",
         customer_type_address: "",
-        apartment_no: "",
+        apartment_no: values.apartmentNumber ?? "",
         address_location: "",
-        special_marque: "",
+        special_marque: values.specialMark ?? "",
         default_billing: 0,
         default_shipping: 1,
-      })
+        })
       toast.success(t("address.saved"))
       navigate("/addresses", { replace: true })
     } catch (error) {
@@ -131,96 +134,120 @@ export function AddAddressForm() {
       <div className="flex flex-col gap-1.5">
         <Label>{t("address.country")}</Label>
         <Controller
-          control={control}
-          name="countryId"
-          render={({ field }) => (
-            <Select value={field.value} onValueChange={field.onChange}>
-              <SelectTrigger>
-                <SelectValue placeholder={t("address.selectCountry")} />
-              </SelectTrigger>
-              <SelectContent>
-                {phoneCountries.map((c) => (
-                  <SelectItem key={c.iso2} value={c.iso2}>
-                    {c.flag} {c.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          )}
-        />
+  control={control}
+  name="countryId"
+  render={({ field }) => {
+    const selected = phoneCountries.find((c) => c.iso2 === field.value)
+    return (
+      <Select value={field.value} onValueChange={field.onChange}>
+        <SelectTrigger className="w-full">
+          <SelectValue placeholder={t("address.selectCountry")}>
+            {selected ? `${selected.flag} ${selected.name}` : t("address.selectCountry")}
+          </SelectValue>
+        </SelectTrigger>
+        <SelectContent>
+          {phoneCountries.map((c) => (
+            <SelectItem key={c.iso2} value={c.iso2}>
+              {c.flag} {c.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    )
+  }}
+/>
       </div>
 
-      <FormTextField control={control} name="firstName" label={t("auth.register.firstName")} placeholder="John" />
-      <FormTextField control={control} name="lastName" label={t("auth.register.lastName")} placeholder="Doe" />
+      {!user?.name && (
+        <FormTextField control={control} name="firstName" label={t("auth.register.firstName")} placeholder="John" />
+      )}
+      {!user?.last_name && (
+        <FormTextField control={control} name="lastName" label={t("auth.register.lastName")} placeholder="Doe" />
+      )}
       <FormTextField control={control} name="street" label={t("address.street")} placeholder="Makkah St." />
 
       {/* Region */}
       <div className="flex flex-col gap-1.5">
         <Label>{t("address.region")}</Label>
         <Controller
-          control={control}
-          name="regionId"
-          render={({ field }) => (
-            <Select value={field.value} onValueChange={field.onChange} disabled={isLoadingRegions}>
-              <SelectTrigger>
-                <SelectValue placeholder={isLoadingRegions ? undefined : t("address.selectRegion")}>
-                  {isLoadingRegions && (
-                    <span className="flex items-center gap-2 text-muted-foreground">
-                      <Loader2 className="size-4 animate-spin" />
-                      {t("common.loading")}
-                    </span>
-                  )}
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                {regions.map((region) => (
-                  <SelectItem key={region.id} value={region.id}>
-                    {region.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          )}
-        />
+  control={control}
+  name="regionId"
+  render={({ field }) => {
+    const selected = regions.find((r) => r.id === field.value)
+    return (
+      <Select value={field.value} onValueChange={field.onChange} disabled={isLoadingRegions}>
+        <SelectTrigger className="w-full">
+          <SelectValue placeholder={t("address.selectRegion")}>
+            {isLoadingRegions ? (
+              <span className="flex items-center gap-2 text-muted-foreground">
+                <Loader2 className="size-4 animate-spin" />
+                {t("common.loading")}
+              </span>
+            ) : (
+              selected?.name ?? t("address.selectRegion")
+            )}
+          </SelectValue>
+        </SelectTrigger>
+        <SelectContent>
+          {regions.map((region) => (
+            <SelectItem key={region.id} value={region.id}>
+              {region.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    )
+  }}
+/>
       </div>
 
       {/* City */}
       <div className="flex flex-col gap-1.5">
         <Label>{t("address.city")}</Label>
         <Controller
-          control={control}
-          name="cityId"
-          render={({ field }) => (
-            <Select
-              value={field.value}
-              onValueChange={field.onChange}
-              disabled={!selectedRegionId || isLoadingCities}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder={isLoadingCities ? undefined : t("address.selectCity")}>
-                  {isLoadingCities && (
-                    <span className="flex items-center gap-2 text-muted-foreground">
-                      <Loader2 className="size-4 animate-spin" />
-                      {t("common.loading")}
-                    </span>
-                  )}
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                {cities.map((city) => (
-                  <SelectItem key={city.city_id} value={city.city_id}>
-                    {city.default_name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          )}
-        />
+  control={control}
+  name="cityId"
+  render={({ field }) => {
+    const selected = cities.find((c) => c.city_id === field.value)
+    return (
+      <Select
+        value={field.value}
+        onValueChange={field.onChange}
+        disabled={!selectedRegionId || isLoadingCities}
+      >
+        <SelectTrigger className="w-full">
+          <SelectValue placeholder={t("address.selectCity")}>
+            {isLoadingCities ? (
+              <span className="flex items-center gap-2 text-muted-foreground">
+                <Loader2 className="size-4 animate-spin" />
+                {t("common.loading")}
+              </span>
+            ) : (
+              selected?.default_name ?? t("address.selectCity")
+            )}
+          </SelectValue>
+        </SelectTrigger>
+        <SelectContent>
+          {cities.map((city) => (
+            <SelectItem key={city.city_id} value={city.city_id}>
+              {city.default_name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    )
+  }}
+/>
       </div>
 
       <FormTextField control={control} name="postcode" label={t("address.postcode")} placeholder="12" />
-      <FormTextField control={control} name="telephone" label={t("address.telephone")} type="tel" placeholder="0790325612" />
-      <FormTextField control={control} name="shortAddress" label={t("address.shortAddress")} placeholder="4234ssss" />
+        {!user?.phone_number && (
+        <FormTextField control={control} name="telephone" label={t("address.telephone")} type="tel" placeholder="0790325612" />
+        )}      
+        <FormTextField control={control} name="shortAddress" label={t("address.shortAddress")} placeholder="4234ssss" />
+      <FormTextField control={control} name="floorNumber" label={t("address.floorNumber")} placeholder="2" />
+    <FormTextField control={control} name="apartmentNumber" label={t("address.apartmentNumber")} placeholder="14" />
+    <FormTextField control={control} name="specialMark" label={t("address.specialMark")} placeholder="Near the mosque" />
 
       <Button type="submit" disabled={isSubmitting} className="mt-2">
         {isSubmitting ? t("address.saving") : t("address.save")}

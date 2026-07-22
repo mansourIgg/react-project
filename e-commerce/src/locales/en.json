@@ -10,7 +10,9 @@
     "loading": "Loading...",
     "logout": "Logout",
     "addresses": "Addresses",
-    "orders": "Orders"
+    "orders": "Orders",
+    "previous": "Previous",
+    "next": "Next"
   },
   "dashboard": {
     "featuredProducts": "Featured Products",
@@ -23,7 +25,12 @@
     "empty": "Your cart is empty",
     "continueShopping": "Continue shopping",
     "total": "Total",
-    "checkout": "Checkout"
+    "checkout": "Checkout",
+    "deleteItem": "Delete item",
+    "deleteConfirmTitle": "Remove item",
+    "deleteConfirmDescription": "Are you sure you want to remove this item from your cart?",
+    "deleteCancel": "Cancel",
+    "deleteConfirm": "Remove"
   },
   "checkout": {
     "title": "Checkout",
@@ -88,7 +95,7 @@
   "buildingNumber": "Building number",
   "floorNumber": "Floor number",
   "apartmentNumber": "Apartment number",
-  "specialMarque": "Special mark",
+  "specialMark": "Special mark",
   "makeDefault": "Make default",
   "defaultAddress": "Default address",
   "emptyTitle": "No addresses yet",
@@ -103,6 +110,13 @@
   "saved": "Address saved successfully",
   "save": "Save address",
   "saving": "Saving...",
-  "selectCountry": "Select country"
-}
+  "selectCountry": "Select country",
+  "deleteAddress": "Delete address",
+  "deleteConfirmTitle": "Remove address",
+  "deleteConfirmDescription": "Are you sure you want to remove this address?",
+  "deleteCancel": "Cancel",
+  "deleteConfirm": "Remove",
+  "settingDefault": "Setting..."
+},
+"product": { "chooseOptionsFirst": "Please choose your desired options first" }
 }

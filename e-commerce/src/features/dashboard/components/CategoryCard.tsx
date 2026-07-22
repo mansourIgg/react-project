@@ -6,7 +6,7 @@ export function CategoryCard({ category }: { category: ApiCategory }) {
   return (
     <Link
       to={`/products/category-${category.id}`}
-      state={{ title: category.title }}
+      state={{ title: category.title, categoryId: category.id }}
       className="flex w-20 shrink-0 flex-col items-center gap-2"
     >
       <img

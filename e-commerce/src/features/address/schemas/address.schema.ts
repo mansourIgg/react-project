@@ -11,5 +11,9 @@ export const addAddressSchema = z.object({
   postcode: z.string().min(1, "Postcode is required"),
   telephone: z.string().min(8, "Enter a valid phone number"),
   shortAddress: z.string().min(1, "Short address is required"),
+  floorNumber: z.string().optional(),
+  apartmentNumber: z.string().optional(),
+  specialMark: z.string().optional(),
 })
+
 export type AddAddressFormValues = z.infer<typeof addAddressSchema>
