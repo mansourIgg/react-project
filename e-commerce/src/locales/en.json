@@ -12,7 +12,8 @@
     "addresses": "Addresses",
     "orders": "Orders",
     "previous": "Previous",
-    "next": "Next"
+    "next": "Next",
+    "wishlist": "Wishlist"
   },
   "dashboard": {
     "featuredProducts": "Featured Products",
@@ -118,5 +119,12 @@
   "deleteConfirm": "Remove",
   "settingDefault": "Setting..."
 },
-"product": { "chooseOptionsFirst": "Please choose your desired options first" }
+"product": { "chooseOptionsFirst": "Please choose your desired options first" },
+"wishlist": {
+  "title": "Wishlist",
+  "emptyTitle": "Your wishlist is empty",
+  "emptyDescription": "Tap the heart on any product to save it here."
+},
+"theme": "Theme"
+
 }

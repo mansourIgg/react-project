@@ -3,6 +3,8 @@ import { apiRequest , apiRequestRaw} from "@/lib/api-client"
 import type { AddToCartResponse, ViewCartResponse } from "../types/cart-api.types"
 import { guestCartIdStorage } from "./cart-id.storage"
 import type { CartMutationResponse } from "../types/cart-mutations.types"
+import type { CartCountResponse } from "../types/cart-count.types"
+
 
 interface AddToCartParams {
   customerId: number
@@ -61,6 +63,21 @@ updateQty: (customerId: number, itemId: number, qty: number) =>
   return apiRequest<ViewCartResponse>({
     method: "POST",
     url: "/V1/mobiconnect/checkout/viewcart",
+    data: payload,
+  })
+},
+
+getCartCount: async (customerId: number) => {
+  const payload: Record<string, unknown> = { customer_id: customerId }
+
+  if (customerId === 0) {
+    const guestCartId = await guestCartIdStorage.get()
+    payload.cart_id = guestCartId
+  }
+
+  return apiRequest<CartCountResponse>({
+    method: "POST",
+    url: "/V1/mobiconnect/cart/cartcount",
     data: payload,
   })
 },

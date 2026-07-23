@@ -1,7 +1,7 @@
 // src/components/common/Header.tsx
 import { useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import { Home, User, ShoppingCart, Globe, LogOut, MapPin, Package } from "lucide-react"
+import { Home, User, ShoppingCart, Globe, LogOut, MapPin, Package, Heart } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { useCart } from "@/features/cart/context/CartContext"
 import { useAuth } from "@/features/auth/context/AuthContext"
@@ -15,6 +15,9 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { LoginRequiredDialog } from "./LoginRequiredDialog"
 import { LogoutConfirmDialog } from "./LogoutConfirmDialog"
+import { useTheme } from "next-themes"
+import { Palette } from "lucide-react"
+import { themes } from "@/lib/themes"
 
 export function Header() {
   const { totalItems } = useCart()
@@ -23,12 +26,13 @@ export function Header() {
   const { t } = useTranslation()
   const { pathname } = useLocation()
   const navigate = useNavigate()
-
+  const { theme, setTheme } = useTheme()
   const [loginDialogOpen, setLoginDialogOpen] = useState(false)
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false)
 
   const isDashboard = pathname === "/dashboard"
   const isCart = pathname === "/cart"
+  const isWishlist = pathname === "/wishlist"
   const isAddresses = pathname.startsWith("/addresses")
 
   const handleProfileClick = () => {
@@ -48,6 +52,14 @@ export function Header() {
   const handleAddressesClick = () => {
   if (user) {
     navigate("/addresses")
+  } else {
+    setLoginDialogOpen(true)
+  }
+}
+
+const handleWishlistClick = () => {
+  if (user) {
+    navigate("/wishlist")
   } else {
     setLoginDialogOpen(true)
   }
@@ -111,6 +123,12 @@ const handleOrdersClick = () => {
             </Button>
           )}
 
+          {!isWishlist && (
+          <Button variant="ghost" size="icon" onClick={handleWishlistClick} aria-label={t("common.wishlist")} title={t("common.wishlist")}>
+            <Heart className="size-5" />
+          </Button>
+          )}
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" aria-label={t("common.language")} title={t("common.language")}>
@@ -124,6 +142,25 @@ const handleOrdersClick = () => {
               <DropdownMenuItem onClick={() => setLanguage("ar")} className={language === "ar" ? "font-semibold" : ""}>
                 العربية
               </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" aria-label={t("common.theme")} title={t("common.theme")}>
+              <Palette className="size-5" />
+            </Button>
+          </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {themes.map((t) => (
+                <DropdownMenuItem
+                  key={t.id}
+                  onClick={() => setTheme(t.id)}
+                  className={theme === t.id ? "font-semibold" : ""}
+                >
+                  {t.label}
+                </DropdownMenuItem>
+              ))}
             </DropdownMenuContent>
           </DropdownMenu>
 

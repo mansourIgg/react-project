@@ -118,6 +118,19 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+.rose {
+  --background: 350 100% 98%;
+  --foreground: 340 40% 20%;
+  --primary: 340 82% 52%;
+  --primary-foreground: 0 0% 100%;
+  --card: 350 100% 98%;
+  --card-foreground: 340 40% 20%;
+  --border: 340 30% 88%;
+  --muted: 340 20% 94%;
+  --muted-foreground: 340 15% 45%;
+  /* mirror whichever other variables your existing :root / .dark blocks define */
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

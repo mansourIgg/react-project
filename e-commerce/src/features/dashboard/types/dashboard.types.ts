@@ -11,6 +11,7 @@ export interface Product {
   price: number
   imageUrl: string,
   isConfigurable: boolean
+  isFavourite: boolean
 }
 
 export interface Brand {

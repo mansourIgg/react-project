@@ -12,6 +12,7 @@ import { useCart } from "@/features/cart/context/CartContext"
 import { handleAddToCartGuarded } from "@/features/cart/utils/handle-add-to-cart"
 import type { CategoryApiProduct } from "@/features/dashboard/types/product-api.types"
 import { useCurrency } from "@/lib/use-currency"
+import { FavoriteButton } from "@/features/wishlist/components/FavoriteButton"
 
 interface CategoryLocationState {
   title?: string
@@ -97,11 +98,14 @@ export default function CategoryPage() {
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
               {products.map((product) => (
                 <div key={product.entity_id} className="flex flex-col gap-2">
-                  <img
-                    src={product.small_image}
-                    alt={product.name}
-                    className="aspect-square w-full rounded-lg object-cover"
-                  />
+                  <div className="relative">
+                    <img
+                      src={product.small_image}
+                      alt={product.name}
+                      className="aspect-square w-full rounded-lg object-cover"
+                    />
+                    <FavoriteButton productId={product.entity_id} initialLiked={product.is_favourite} />
+                  </div>
                   <p className="truncate text-sm font-medium">{product.name}</p>
                   <p className="text-sm text-muted-foreground">{format(product.price)}</p>
                   <Button size="sm" onClick={() => onAddToCart(product)}>

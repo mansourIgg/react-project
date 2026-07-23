@@ -14,8 +14,8 @@ export const mapApiProduct = (p: ApiProduct): Product => ({
   price: parseFloat(p.price),
   imageUrl: p.small_image,
   isConfigurable: Boolean(p.type_id) && p.type_id !== "simple",
+  isFavourite: p.is_favourite,
 })
-
 export const mapApiBrand = (b: ApiBrand): Brand => ({
   id: b.brand_id,
   name: b.brand_name,

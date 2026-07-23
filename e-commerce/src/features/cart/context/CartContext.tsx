@@ -41,8 +41,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
       }
 
       try {
-        const response = await cartService.viewCart(customerId)
-        setTotalItems(response.cart.items_count ?? 0)
+        const response = await cartService.getCartCount(customerId)
+        setTotalItems(response.item_count ?? 0)
       } catch {
         setTotalItems(0)
       } finally {

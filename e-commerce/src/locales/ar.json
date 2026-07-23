@@ -12,7 +12,8 @@
     "addresses": "العناوين",
     "orders": "الطلبات",
     "previous": "السابق", 
-    "next": "التالي"
+    "next": "التالي",
+    "wishlist": "المفضلة"
   },
   "dashboard": {
     "featuredProducts": "منتجات مميزة",
@@ -118,5 +119,11 @@
   "deleteConfirm": "إزالة",
   "settingDefault": "جارٍ التعيين..."
 },
-"product": { "chooseOptionsFirst": "يرجى اختيار الخيارات المطلوبة أولاً" }
+"product": { "chooseOptionsFirst": "يرجى اختيار الخيارات المطلوبة أولاً" },
+"wishlist": {
+  "title": "المفضلة",
+  "emptyTitle": "قائمة المفضلة فارغة",
+  "emptyDescription": "اضغط على أيقونة القلب لأي منتج لحفظه هنا."
+},
+"theme": "المظهر"
 }
