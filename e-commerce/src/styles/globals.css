@@ -119,17 +119,40 @@
 }
 
 .rose {
-  --background: 350 100% 98%;
-  --foreground: 340 40% 20%;
-  --primary: 340 82% 52%;
-  --primary-foreground: 0 0% 100%;
-  --card: 350 100% 98%;
-  --card-foreground: 340 40% 20%;
-  --border: 340 30% 88%;
-  --muted: 340 20% 94%;
-  --muted-foreground: 340 15% 45%;
-  /* mirror whichever other variables your existing :root / .dark blocks define */
+  --background: oklch(0.97 0.02 350);
+  --foreground: oklch(0.28 0.08 340);
+  --card: oklch(0.99 0.015 350);
+  --card-foreground: oklch(0.28 0.08 340);
+  --popover: oklch(0.99 0.015 350);
+  --popover-foreground: oklch(0.28 0.08 340);
+  --primary: oklch(0.55 0.22 350);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.93 0.04 350);
+  --secondary-foreground: oklch(0.35 0.1 340);
+  --muted: oklch(0.94 0.03 345);
+  --muted-foreground: oklch(0.5 0.06 340);
+  --accent: oklch(0.88 0.08 350);
+  --accent-foreground: oklch(0.3 0.1 340);
+  --destructive: oklch(0.58 0.22 25);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: oklch(0.88 0.05 350);
+  --input: oklch(0.88 0.05 350);
+  --ring: oklch(0.55 0.22 350);
+  --chart-1: oklch(0.65 0.2 350);
+  --chart-2: oklch(0.6 0.18 20);
+  --chart-3: oklch(0.55 0.15 300);
+  --chart-4: oklch(0.7 0.15 30);
+  --chart-5: oklch(0.5 0.2 340);
+  --sidebar: oklch(0.95 0.03 350);
+  --sidebar-foreground: oklch(0.3 0.08 340);
+  --sidebar-primary: oklch(0.55 0.22 350);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.88 0.08 350);
+  --sidebar-accent-foreground: oklch(0.3 0.1 340);
+  --sidebar-border: oklch(0.88 0.05 350);
+  --sidebar-ring: oklch(0.55 0.22 350);
 }
+
 
 @layer base {
   * {
